@@ -253,6 +253,66 @@
                 console.log('QR code generated!')
             });
         });
+	    document.getElementById("dataForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        // Ask for password before submitting
+        const password = prompt("Please enter the password:");
+        
+        if (password === "123") {
+            // Get user input values
+            const add = document.getElementById("addInput").value;
+
+            if (add) {
+                // Store user input in localStorage
+                localStorage.setItem("add", add);
+
+                // Display the submitted data in the box
+                const submittedData = document.getElementById("submittedData");
+                submittedData.innerHTML = `<p>${add}</p>`; // Add new submission
+
+                // Clear the input field for the next entry
+                document.getElementById("addInput").value = '';
+            }
+        } else {
+            alert("Incorrect password!");
+        }
+    });
+
+    // Modify Save button functionality for each test row
+    function addTestRow(testName, testValue) {
+        const rowDiv = document.createElement('div');
+        rowDiv.classList.add('editable-row');
+
+        const inputName = document.createElement('input');
+        inputName.type = 'text';
+        inputName.value = testName;
+        inputName.classList.add('testInput');
+        inputName.readOnly = true; // Prevent editing the test name
+
+        const inputValue = document.createElement('input');
+        inputValue.type = 'text';
+        inputValue.value = testValue;
+        inputValue.classList.add('testInput');
+
+        const saveButton = document.createElement('button');
+        saveButton.textContent = 'Save';
+        saveButton.onclick = () => {
+            const password = prompt("Please enter the password:");
+            if (password === "123") {
+                const newValue = inputValue.value;
+                rowDiv.dataset.testValue = newValue;
+                alert('Saved: ' + testName + ' - ' + newValue);
+            } else {
+                alert("Incorrect password!");
+            }
+        };
+
+        rowDiv.appendChild(inputName);
+        rowDiv.appendChild(inputValue);
+        rowDiv.appendChild(saveButton);
+        submittedDataDiv.appendChild(rowDiv);
+    }
     </script>
 
 </body>
